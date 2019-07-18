@@ -7,7 +7,7 @@ import secret
 from logg import *
 from system import *
 
-tg_tk = secret.token
+tg_tk = secret.token2
 bot = telebot.TeleBot(tg_tk, threaded=False)
 new_tags = dict()
 image_tag = dict()
