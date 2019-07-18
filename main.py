@@ -367,10 +367,10 @@ def create_tables():
                  ' login, points integer, rating integer)'
     db_.execute(init_query)
     init_query = 'CREATE TABLE IF NOT EXISTS images(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, image_id INTEGER, ' \
-                 'from_id INTEGER, from_username, status INTEGER)'
+                 'from_id INTEGER, username, status INTEGER)'
     db_.execute(init_query)
     init_query = 'CREATE TABLE IF NOT EXISTS tags(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, image_id INTEGER, ' \
-                 'from_id INTEGER, from_username, text)'
+                 'from_id INTEGER, username, text)'
     db_.execute(init_query)
     conn_.commit()
     conn_.close()
