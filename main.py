@@ -223,9 +223,7 @@ def new_image(message):
 def image_save(message, file):
     conn = sqlite3.connect(f)
     db = conn.cursor()
-    print(message)
     q = 'INSERT INTO images (image_id, from_id, username, status) VALUES (?,?,?, 0)'
-    print(file, message.chat.id, id2name(message.chat.id))
     db.execute(q, (file, message.chat.id, id2name(message.chat.id)))
     conn.commit()
     conn.close()
