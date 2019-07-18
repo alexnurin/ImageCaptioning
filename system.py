@@ -15,9 +15,13 @@ def send_boss(text):
 
 
 def send_image(id, img):
-    logg.save_me(id, "Image: {}.png".format(int(img)))
-    image = open('tmp/new/{}.png'.format(int(img)), 'rb')
-    bot.send_photo(id, image)
+    try:
+        logg.save_me(id, "Image: {}.png".format(int(img)))
+        image = open('tmp/new/{}.png'.format(int(img)), 'rb')
+        bot.send_photo(id, image)
+    except FileNotFoundError:
+        send(id, "Какая-то ошибка, попробуйте позже")
+        return "NotFound"
 
 
 def date_format(time):
