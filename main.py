@@ -7,7 +7,11 @@ import secret
 from logg import *
 from system import *
 
-tg_tk = secret.token2
+if os.name == 'nt':
+    tg_tk = secret.token2  # Тестирование
+else:
+    tg_tk = secret.token
+
 bot = telebot.TeleBot(tg_tk, threaded=False)
 new_tags = dict()
 image_tag = dict()
