@@ -9,5 +9,5 @@ secret.txt
 *.sqlite
 secret.py
 support.txt
-top_stickers
+top_stickers.txt
 tmp/
