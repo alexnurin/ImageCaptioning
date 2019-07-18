@@ -7,7 +7,7 @@ import secret
 from logg import *
 from system import *
 
-tg_tk = secret.token
+tg_tk = secret.token2
 bot = telebot.TeleBot(tg_tk, threaded=False)
 new_tags = dict()
 image_tag = dict()
@@ -219,7 +219,9 @@ def new_image(message):
 def image_save(message, file):
     conn = sqlite3.connect(f)
     db = conn.cursor()
-    q = 'INSERT INTO images (image_id, from_id, from_username, status) VALUES (?,?,? 0)'
+    print(message)
+    q = 'INSERT INTO images (image_id, from_id, username, status) VALUES (?,?,?, 0)'
+    print(file, message.chat.id, id2name(message.chat.id))
     db.execute(q, (file, message.chat.id, id2name(message.chat.id)))
     conn.commit()
     conn.close()
