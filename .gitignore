@@ -1,0 +1,13 @@
+.idea/
+__pycache__/
+db.py
+venv/
+test.sqlite-journal
+test.py
+support.txt
+secret.txt
+*.sqlite
+secret.py
+support.txt
+top_stickers
+tmp/
