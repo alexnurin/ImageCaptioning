@@ -139,7 +139,7 @@ def end_tags(id, image_id):
         return
     print(new_tags[id])
     add_points(id, min(10, len(new_tags[id])) * 15)
-    with open("tmp/new/{}.txt".format(image_id), 'a', encoding='utf-8') as f:
+    with open("tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8') as f:
         f.write(('\n'.join(new_tags[id])) + "\n")
     for i in new_tags[id]:
         save_tag(i, id, image_id)
