@@ -21,7 +21,7 @@ boss_id = admins[0]
 
 
 @bot.message_handler(func=lambda message: message.chat.id in admins and message.text and message.text[0] != '/')
-def text_message(message):
+def admin_message(message):
     boss_id = save_mess(message)
     t = message.text.split()
     cmd = t[0].lower()
@@ -41,6 +41,13 @@ def text_message(message):
             send(boss_id, "Ошибка {}".format(str(e)))
     elif cmd == 'sys':
         pass
+    elif cmd == 'cluster':
+        send(boss_id, 'Go!!')
+        try:
+            os.system("python clustering/clustering.py")
+            send(boss_id, 'Done!')
+        except BaseException as f:
+            send(boss_id, 'Error: ' + str(f))
     elif cmd == "image":
         try:
             send_image(boss_id, t[1])
@@ -223,7 +230,7 @@ def new_image(message):
 def image_save(message, file):
     conn = sqlite3.connect(f)
     db = conn.cursor()
-    q = 'INSERT INTO images (image_id, from_id, username, status) VALUES (?,?,?, 0)'
+    q = 'INSERT INTO images (image_id, from_id, username, status, cluster) VALUES (?,?,?,0,-1)'
     db.execute(q, (file, message.chat.id, id2name(message.chat.id)))
     conn.commit()
     conn.close()
@@ -365,7 +372,7 @@ def create_tables():
                  ' login, points integer, rating integer)'
     db_.execute(init_query)
     init_query = 'CREATE TABLE IF NOT EXISTS images(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, image_id INTEGER, ' \
-                 'from_id INTEGER, username, status INTEGER)'
+                 'from_id INTEGER, username, status INTEGER, cluster INTEGER)'
     db_.execute(init_query)
     init_query = 'CREATE TABLE IF NOT EXISTS tags(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, image_id INTEGER, ' \
                  'from_id INTEGER, username, text)'
