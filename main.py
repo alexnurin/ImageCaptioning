@@ -16,7 +16,7 @@ bot = telebot.TeleBot(tg_tk, threaded=False)
 new_tags = dict()
 image_tag = dict()
 search_dict = dict()
-admins = [464580076, 390277260]
+admins = secret.admins
 boss_id = admins[0]
 
 
@@ -28,31 +28,30 @@ def admin_message(message):
     if cmd == "send":
         send(t[1], t[2])
     elif cmd == "all":
-        try:
-            users = all_for_boss(t[1])
-            send(boss_id, users)
-        except Exception as e:
-            send(boss_id, "Ошибка {}".format(str(e)))
+        users = all_for_boss(t[1])
+        send(boss_id, users)
     elif cmd == 'len':
-        try:
-            users = all_for_boss(t[1])
-            send(boss_id, len(users))
-        except Exception as e:
-            send(boss_id, "Ошибка {}".format(str(e)))
+        users = all_for_boss(t[1])
+        send(boss_id, len(users))
     elif cmd == 'sys':
-        pass
+        con = sqlite3.connect(f)
+        db = con.cursor()
+
+        cmd = "ALTER TABLE images ADD COLUMN cluster"
+        db.execute(cmd)
+
+        cmd = 'UPDATE images SET cluster = -1'
+        db.execute(cmd)
+
+        con.commit()
+        con.close()
+
     elif cmd == 'cluster':
         send(boss_id, 'Go!!')
-        try:
-            os.system("python clustering/clustering.py")
-            send(boss_id, 'Done!')
-        except BaseException as f:
-            send(boss_id, 'Error: ' + str(f))
+        os.system("python clustering/clustering.py")
+        send(boss_id, 'Done!')
     elif cmd == "image":
-        try:
-            send_image(boss_id, t[1])
-        except Exception as e:
-            send(boss_id, "Ошибка {}".format(str(e)))
+        send_image(boss_id, t[1])
     else:
         send(boss_id, message.text)
 
@@ -218,13 +217,13 @@ def new_image(message):
         bot.reply_to(message, "Такая картинка уже есть!")
         return
     downloaded_file = bot.download_file(file_info.file_path)
-    file = len(open('tmp/data.txt', 'r').readlines()) + 1
+    file = len(olds) + 1
     src = 'tmp/new/{}.png'.format(file)
     with open(src, 'wb') as new_file:
         new_file.write(downloaded_file)
+    image_save(message, file)
     with open("tmp/data.txt", 'a') as add:
         add.write(file_id + '\n')
-    image_save(message, file)
 
 
 def image_save(message, file):
@@ -392,4 +391,8 @@ def save_mess(message, n='Anon', t='None', printing=1):
 if __name__ == '__main__':
     create_tables()
     print('Start!\n')
-    bot.polling(none_stop=True)
+    while 1:
+        try:
+            bot.polling(none_stop=True)
+        except Exception as e:
+            send(boss_id, "$ Вызвана ошибка: " + str(e))
