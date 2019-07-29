@@ -10,8 +10,11 @@ from system import *
 
 if os.name == 'nt':
     tg_tk = secret.token2  # Тестирование
+    python_run = 'python'
 else:
     tg_tk = secret.token
+    python_run = 'python3'
+
 
 bot = telebot.TeleBot(tg_tk, threaded=False)
 new_tags = dict()
@@ -49,7 +52,7 @@ def admin_message(message):
 
     elif cmd == 'cluster':
         send(boss_id, 'Go!!')
-        os.system("python clustering/clustering.py")
+        os.system("{} clustering/clustering.py".format(python_run))
         send(boss_id, 'Done!')
     elif cmd == "image":
         send_image(boss_id, t[1])

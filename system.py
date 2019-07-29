@@ -20,7 +20,7 @@ def send_image(id, img):
         image = open('tmp/new/{}.png'.format(int(img)), 'rb')
         bot.send_photo(id, image)
     except FileNotFoundError:
-        send(id, "Какая-то ошибка, попробуйте позже")
+        send(id, "Какая-то ошибка. Попробуйте позже")
         return "NotFound"
 
 
