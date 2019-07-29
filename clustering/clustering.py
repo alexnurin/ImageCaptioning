@@ -1,6 +1,9 @@
 import sys
 import os
+import system
+import sqlite3
 from shutil import copyfile
+
 sys.path.append("..")  # Adds higher directory to python modules path.
 
 from img_to_vec import Img2Vec
@@ -9,7 +12,7 @@ import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 
-input_path = "../tmp/new"
+input_path = "./tmp/new"
 files = os.listdir(input_path)
 
 img2vec = Img2Vec()
@@ -37,19 +40,37 @@ kmeans = KMeans(init='k-means++', n_clusters=k_value, n_init=10)
 kmeans.fit(reduced_data)
 
 # Create a folder for each cluster (0, 1, 2, ..)
+
+if not os.path.exists('./tmp/clusters'):
+    os.makedirs('./tmp/clusters')
+    print('created /tmp/clusters')
+
 for i in set(kmeans.labels_):
+    with open("./tmp/clusters/{}.txt".format(str(i)), 'w') as f:
+        f.write('')
     try:
-        os.mkdir('./' + str(i))
+        os.mkdir('./tmp/clusters/' + str(i))
     except FileExistsError:
         continue
 
 print('Predicting...')
 preds = kmeans.predict(reduced_data)
 
+conn = sqlite3.connect(system.f)
+db = conn.cursor()
 print('Copying images...')
 for index, i in enumerate(sample_indices):
     file = files[i]
     filename = os.fsdecode(file)
-    copyfile(input_path + '/' + filename, './' + str(preds[index]) + '/' + filename)
+    copyfile(input_path + '/' + filename, './tmp/clusters/' + str(preds[index]) + '/' + filename)
+
+    with open("./tmp/clusters/{}.txt".format(str(preds[index])), 'a') as f:
+        f.write(filename[:-4] + '\n')
+
+    q = 'UPDATE images SET cluster = ? WHERE image_id = ?'
+    db.execute(q, (int(preds[index]), index))
+
+conn.commit()
+conn.close()
 
 print('Done!')

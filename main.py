@@ -2,6 +2,7 @@ import telebot
 from telebot import types
 import numpy as np
 import os
+import time
 from collections import Counter
 import secret
 from logg import *
@@ -52,6 +53,9 @@ def admin_message(message):
         send(boss_id, 'Done!')
     elif cmd == "image":
         send_image(boss_id, t[1])
+    elif cmd == 'break' and int(time.time()) - message.date < 5:
+        send_boss("Я упаль")
+        exit(0)
     else:
         send(boss_id, message.text)
 
