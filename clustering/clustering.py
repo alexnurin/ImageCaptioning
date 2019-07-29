@@ -48,10 +48,6 @@ if not os.path.exists('./tmp/clusters'):
 for i in set(kmeans.labels_):
     with open("./tmp/clusters/{}.txt".format(str(i)), 'w') as f:
         f.write('')
-    try:
-        os.mkdir('./tmp/clusters/' + str(i))
-    except FileExistsError:
-        continue
 
 print('Predicting...')
 preds = kmeans.predict(reduced_data)
@@ -62,8 +58,6 @@ print('Copying images...')
 for index, i in enumerate(sample_indices):
     file = files[i]
     filename = os.fsdecode(file)
-    copyfile(input_path + '/' + filename, './tmp/clusters/' + str(preds[index]) + '/' + filename)
-
     with open("./tmp/clusters/{}.txt".format(str(preds[index])), 'a') as f:
         f.write(filename[:-4] + '\n')
 
