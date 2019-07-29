@@ -3,12 +3,8 @@ import os
 import sqlite3
 from shutil import copyfile
 
-print(sys.path)
-if os.name == 'nt':
-    sys.path.insert(1, "..")
-else:
-    sys.path.insert(1, str(os.getcwd().split('/')[:-1]))
-print(sys.path)
+sys.path.insert(1, os.getcwd())
+
 import system
 
 from img_to_vec import Img2Vec
