@@ -161,9 +161,8 @@ def end_tags(id, image_id):
     else:
         olds = []
     print(olds)
-    cluster_olds = []
-    cluster_number = id2cluster(image_id)
-    print(cluster_number)
+    cluster_olds = cluster2ids(id2cluster(image_id))
+    print(cluster_olds, id2cluster(image_id), )
     with open("./tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8') as f:
         f.write(('\n'.join(new_tags[id])) + "\n")
     for i in new_tags[id]:
@@ -179,8 +178,15 @@ def end_tags(id, image_id):
 def id2cluster(image_id):
     db = sqlite3.connect(f).cursor()
     q = 'SELECT cluster FROM images WHERE image_id = ?'
-    db.execute(q, (image_id, ))
-    return db.fetchall()
+    db.execute(q, (image_id,))
+    return db.fetchall()[0][0]
+
+
+def cluster2ids(cluster):
+    db = sqlite3.connect(f).cursor()
+    q = 'SELECT image_id FROM images WHERE cluster = ?'
+    db.execute(q, (cluster,))
+    return [i[0] for i in db.fetchall()]
 
 
 @bot.message_handler(commands=['register'])
