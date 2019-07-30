@@ -95,8 +95,8 @@ def start_tags(message):
         return
     image_id = None
     for i in image_ids:
-        if os.path.isfile("tmp/tags/{}.txt"):
-            olds = len(open("tmp/tags/{}.txt".format(i), 'r', encoding='utf-8').readlines()) > 0
+        if os.path.isfile("./tmp/tags/{}.txt"):
+            olds = len(open("./tmp/tags/{}.txt".format(i), 'r', encoding='utf-8').readlines())
         else:
             olds = 0
         print(i, olds)
@@ -156,12 +156,12 @@ def end_tags(id, image_id):
         return
     points = 5
     print(new_tags[id])
-    try:
-        olds = open("tmp/tags/{}.txt".format(image_id), 'r', encoding='utf-8').readlines()
-    except:
+    if os.path.isfile("./tmp/tags/{}.txt"):
+        olds = open("./tmp/tags/{}.txt".format(i), 'r', encoding='utf-8').readlines()
+    else:
         olds = []
     print(olds)
-    with open("tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8') as f:
+    with open("./tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8') as f:
         f.write(('\n'.join(new_tags[id])) + "\n")
     for i in new_tags[id]:
         save_tag(i, id, image_id)
