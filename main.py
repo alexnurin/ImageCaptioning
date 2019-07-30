@@ -156,8 +156,8 @@ def end_tags(id, image_id):
         return
     points = 5
     print(new_tags[id])
-    if os.path.isfile("./tmp/tags/{}.txt"):
-        olds = open("./tmp/tags/{}.txt".format(i), 'r', encoding='utf-8').readlines()
+    if os.path.isfile("./tmp/tags/{}.txt".format(image_id)):
+        olds = open("./tmp/tags/{}.txt".format(image_id), 'r', encoding='utf-8').readlines()
     else:
         olds = []
     print(olds)
