@@ -95,9 +95,9 @@ def start_tags(message):
         return
     image_id = None
     for i in image_ids:
-
+        olds = id2tags(i)
         print(i, olds)
-        if (id != boss_id and not already_check(id, i)) or (id == boss_id and olds > 0):
+        if (id != boss_id and not already_check(id, i)) or (id == boss_id and len(olds )> 0):
             image_id = i
             break
     if not image_id:
@@ -158,7 +158,7 @@ def end_tags(id, image_id):
     cluster_olds = cluster2ids(id2cluster(image_id))
     print(cluster_olds, id2cluster(image_id), )
     for i in cluster_olds:
-
+        print(i, id2tags(i))
     with open("./tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8') as f:
         f.write(('\n'.join(new_tags[id])) + "\n")
     for i in new_tags[id]:
