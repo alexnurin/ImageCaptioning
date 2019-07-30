@@ -161,6 +161,9 @@ def end_tags(id, image_id):
     else:
         olds = []
     print(olds)
+    cluster_olds = []
+    cluster_number = id2cluster(image_id)
+    print(cluster_number)
     with open("./tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8') as f:
         f.write(('\n'.join(new_tags[id])) + "\n")
     for i in new_tags[id]:
@@ -171,6 +174,13 @@ def end_tags(id, image_id):
     send_boss("$Картинка {} получила теги: ".format(image_id) + ', '.join(new_tags[id]))
     new_tags[id] = []
     add_points(id, points)
+
+
+def id2cluster(image_id):
+    db = sqlite3.connect(f).cursor()
+    q = 'SELECT cluster FROM images WHERE image_id = ?'
+    db.execute(q, (image_id, ))
+    return db.fetchall()
 
 
 @bot.message_handler(commands=['register'])
