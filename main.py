@@ -95,7 +95,7 @@ def start_tags(message):
         return
     image_id = None
     for i in image_ids:
-        if (not already_check(id, i)) and (id != boss_id or len(open("tmp/tags/{}.txt".format(image_id), 'r', encoding='utf-8').readlines()) > 0):
+        if (not already_check(id, i)) and (id != boss_id or len(open("tmp/tags/{}.txt".format(i), 'r', encoding='utf-8').readlines()) > 0):
             image_id = i
             break
     if not image_id:
