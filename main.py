@@ -100,7 +100,7 @@ def start_tags(message):
         else:
             olds = 0
         print(i, olds)
-        if (not already_check(id, i)) and (id != boss_id or olds > 0):
+        if (id != boss_id and not already_check(id, i)) or (id == boss_id and olds > 0):
             image_id = i
             break
     if not image_id:
