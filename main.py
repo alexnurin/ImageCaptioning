@@ -15,7 +15,6 @@ else:
     tg_tk = secret.token
     python_run = 'python3'
 
-
 bot = telebot.TeleBot(tg_tk, threaded=False)
 new_tags = dict()
 image_tag = dict()
@@ -133,7 +132,7 @@ def get_tag(message):
         end_tags(id, image_tag[id])
         help_message(message)
     else:
-        new_tags[id] += [text.lower()]
+        new_tags[id] += text.lower().split()
         send(id, 'Принято')
         bot.register_next_step_handler(message, get_tag)
 
@@ -150,15 +149,22 @@ def save_tag(text, from_id, image_id):
 def end_tags(id, image_id):
     if len(new_tags[id]) < 1:
         return
+    points = 5
     print(new_tags[id])
-    add_points(id, min(10, len(new_tags[id])) * 15)
+    try:
+        olds = open("tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8').writelines()
+    except:
+        olds = []
     with open("tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8') as f:
         f.write(('\n'.join(new_tags[id])) + "\n")
     for i in new_tags[id]:
         save_tag(i, id, image_id)
+        if i in olds:
+            points += 5
     send(id, "Вот что получилось: " + ', '.join(new_tags[id]))
     send_boss("$Картинка {} получила теги: ".format(image_id) + ', '.join(new_tags[id]))
     new_tags[id] = []
+    add_points(id, points)
 
 
 @bot.message_handler(commands=['register'])
