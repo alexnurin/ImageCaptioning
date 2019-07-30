@@ -95,7 +95,7 @@ def start_tags(message):
         return
     image_id = None
     for i in image_ids:
-        if os.path.isfile("./tmp/tags/{}.txt"):
+        if os.path.isfile("./tmp/tags/{}.txt".format(i)):
             olds = len(open("./tmp/tags/{}.txt".format(i), 'r', encoding='utf-8').readlines())
         else:
             olds = 0
