@@ -155,6 +155,7 @@ def end_tags(id, image_id):
         olds = open("tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8').writelines()
     except:
         olds = []
+    print(olds)
     with open("tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8') as f:
         f.write(('\n'.join(new_tags[id])) + "\n")
     for i in new_tags[id]:
