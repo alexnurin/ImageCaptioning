@@ -99,6 +99,7 @@ def start_tags(message):
             olds = len(open("tmp/tags/{}.txt".format(i), 'r', encoding='utf-8').readlines()) > 0
         else:
             olds = 0
+        print(i, olds)
         if (not already_check(id, i)) and (id != boss_id or olds > 0):
             image_id = i
             break
