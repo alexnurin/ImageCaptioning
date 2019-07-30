@@ -95,10 +95,7 @@ def start_tags(message):
         return
     image_id = None
     for i in image_ids:
-        if os.path.isfile("./tmp/tags/{}.txt".format(i)):
-            olds = len(open("./tmp/tags/{}.txt".format(i), 'r', encoding='utf-8').readlines())
-        else:
-            olds = 0
+
         print(i, olds)
         if (id != boss_id and not already_check(id, i)) or (id == boss_id and olds > 0):
             image_id = i
@@ -156,13 +153,12 @@ def end_tags(id, image_id):
         return
     points = 5
     print(new_tags[id])
-    if os.path.isfile("./tmp/tags/{}.txt".format(image_id)):
-        olds = open("./tmp/tags/{}.txt".format(image_id), 'r', encoding='utf-8').read().split('\n')
-    else:
-        olds = []
+    olds = id2tags(image_id)
     print(olds)
     cluster_olds = cluster2ids(id2cluster(image_id))
     print(cluster_olds, id2cluster(image_id), )
+    for i in cluster_olds:
+
     with open("./tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8') as f:
         f.write(('\n'.join(new_tags[id])) + "\n")
     for i in new_tags[id]:
@@ -173,6 +169,12 @@ def end_tags(id, image_id):
     send_boss("$Картинка {} получила теги: ".format(image_id) + ', '.join(new_tags[id]))
     new_tags[id] = []
     add_points(id, points)
+
+
+def id2tags(image_id):
+    if os.path.isfile("./tmp/tags/{}.txt".format(image_id)):
+        return open("./tmp/tags/{}.txt".format(image_id), 'r', encoding='utf-8').read().split('\n')
+    return []
 
 
 def id2cluster(image_id):
