@@ -95,7 +95,7 @@ def start_tags(message):
         return
     image_id = None
     for i in image_ids:
-        if not already_check(id, i):
+        if (not already_check(id, i)) and (id != boss_id or len(open("tmp/tags/{}.txt".format(image_id), 'r', encoding='utf-8').readlines()) > 0):
             image_id = i
             break
     if not image_id:
@@ -152,7 +152,7 @@ def end_tags(id, image_id):
     points = 5
     print(new_tags[id])
     try:
-        olds = open("tmp/tags/{}.txt".format(image_id), 'a', encoding='utf-8').writelines()
+        olds = open("tmp/tags/{}.txt".format(image_id), 'r', encoding='utf-8').readlines()
     except:
         olds = []
     print(olds)
